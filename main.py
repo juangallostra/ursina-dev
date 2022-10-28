@@ -1,8 +1,9 @@
 from ursina import *
 from ursina.shaders import *
 import math
+from controllers import ShipController, DroneController
 
-from player import Player
+from player import ShipPlayer, DronePlayer
 from projectile import Projectile
 
 # create a window
@@ -36,34 +37,36 @@ for z in range(40):
         )
 
 # Ship
-player = Player(
-    angular_speed=120,
-    linear_speed=6,
-    model='models/pirate-ship-fat.obj', 
-    texture='models/pirate-ship-fat.mtl',
-    position=(0,-0.1,0),
-    # collider='mesh'
-    collider='box',
-    shader=lit_with_shadows_shader
-)
-
-# Drone
-# player = Player(
-#     angular_speed=120,
-#     linear_speed=6,
-#     model='models/drone.obj',
-#     color=color.black,
-#     # model='models/pirate-ship-fat.obj', 
-#     # texture='models/pirate-ship-fat.mtl',
-#     scale_x=0.5,
-#     scale_y=0.5,
-#     scale_z=0.5,
-#     # position=(0,-0.1,0),
-#     position=(0,1,0),
+# player = ShipPlayer(
+#     # linear_velocity=6,
+#     # angular_velocity=120,
+#     # controller=ShipController,
+#     model='models/pirate-ship-fat.obj', 
+#     texture='models/pirate-ship-fat.mtl',
+#     position=(0,-0.1,0),
 #     # collider='mesh'
 #     collider='box',
 #     shader=lit_with_shadows_shader
 # )
+
+# Drone
+player = DronePlayer(
+    angular_speed=120,
+    linear_speed=6,
+    controller=DroneController,
+    model='models/drone.obj',
+    color=color.black,
+    # model='models/pirate-ship-fat.obj', 
+    # texture='models/pirate-ship-fat.mtl',
+    scale_x=0.5,
+    scale_y=0.5,
+    scale_z=0.5,
+    # position=(0,-0.1,0),
+    position=(0,1,0),
+    # collider='mesh'
+    collider='box',
+    shader=lit_with_shadows_shader
+)
 
 # create a function called 'update'.
 # this will automatically get called by the engine every frame.
@@ -98,28 +101,12 @@ def input(key):
             destroy(p)
 
 # def update():
-#     dist = held_keys['w'] * time.dt * 4
-#     player.x -= dist * math.cos(player.rotation_y * math.pi / 180)
-#     player.z += dist * math.sin(player.rotation_y * math.pi / 180)
-
-#     player.rotation_y += held_keys['a'] * time.dt * 80
-#     player.rotation_y -= held_keys['d'] * time.dt * 80
-
-    # player.x += held_keys['d'] * time.dt * 4
-    # player.x -= held_keys['a'] * time.dt * 4
-
-    # player.z += held_keys['w'] * time.dt * 4
-    # player.z -= held_keys['s'] * time.dt * 4
-
-    # player.y += held_keys['z'] * time.dt * 4
-    # player.y -= held_keys['x'] * time.dt * 4
-    
-    # for projectile in projectiles:
-    #     if projectile.intersects(player).hit:
-    #         projectile.color = color.lime
-    #         destroy(projectile)
-    #     else:
-    #         projectile.color = color.black
+#     for projectile in projectiles:
+#         if projectile.intersects(player).hit:
+#             projectile.color = color.lime
+#             destroy(projectile)
+#         else:
+#             projectile.color = color.black
 
 # this part will make the player move left or right based on our input.
 # to check which keys are held down, we can check the held_keys dictionary.
@@ -133,7 +120,7 @@ def input(key):
 #         player.y += 1
 #         invoke(setattr, player, 'y', player.y-1, delay=.25)
 
-
+# Shaders
 pivot = Entity()
 DirectionalLight(
     parent=pivot,

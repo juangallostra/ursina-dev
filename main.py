@@ -13,11 +13,14 @@ app = Ursina()
 # the first paramenter tells us the Entity's model will be a 3d-model called 'cube'.
 # ursina includes some basic models like 'cube', 'sphere' and 'quad'.
 
-# the next parameter tells us the model's color should be orange.
+
+# Sky()
+# ground = Entity(model='plane', collider='box', scale=128, texture='grass', texture_scale=(4,4), name="ground")
 
 EditorCamera()
-# 'scale_y=2' tells us how big the entity should be in the vertical axis, how tall it should be.
+
 # in ursina, positive x is right, positive y is up, and positive z is forward.
+
 projectiles = []
 sea = []
 
@@ -37,44 +40,41 @@ for z in range(40):
         )
 
 # Ship
-# player = ShipPlayer(
-#     # linear_velocity=6,
-#     # angular_velocity=120,
-#     # controller=ShipController,
-#     model='models/pirate-ship-fat.obj', 
-#     texture='models/pirate-ship-fat.mtl',
-#     position=(0,-0.1,0),
-#     # collider='mesh'
-#     collider='box',
-#     shader=lit_with_shadows_shader
-# )
 
-# Drone
-player = DronePlayer(
-    angular_speed=120,
-    linear_speed=6,
-    controller=DroneController,
-    model='models/drone.obj',
-    color=color.black,
-    # model='models/pirate-ship-fat.obj', 
-    # texture='models/pirate-ship-fat.mtl',
-    scale_x=0.5,
-    scale_y=0.5,
-    scale_z=0.5,
-    # position=(0,-0.1,0),
-    position=(0,1,0),
+player = ShipPlayer(
+    # linear_velocity=6,
+    # angular_velocity=120,
+    # controller=ShipController,
+    model='models/pirate-ship-fat.obj', 
+    texture='models/pirate-ship-fat.mtl',
+    position=(0,-0.1,0),
     # collider='mesh'
     collider='box',
     shader=lit_with_shadows_shader
 )
 
-# create a function called 'update'.
-# this will automatically get called by the engine every frame.
+# Drone
+# player = DronePlayer(
+#     angular_speed=120,
+#     linear_speed=6,
+#     controller=DroneController,
+#     model='models/drone.obj',
+#     color=color.black,
+#     # model='models/pirate-ship-fat.obj', 
+#     # texture='models/pirate-ship-fat.mtl',
+#     scale_x=0.5,
+#     scale_y=0.5,
+#     scale_z=0.5,
+#     # position=(0,-0.1,0),
+#     position=(0,1,0),
+#     # collider='mesh'
+#     collider='box',
+#     shader=lit_with_shadows_shader
+# )
 
 
 # camera.position = (15, 100, 15)
 # camera.rotation = (90, 0, 0)
-# EditorCamera()
 
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)

@@ -19,6 +19,9 @@ class DroneController(BaseController):
     def move(self, dt, held_keys):
         dist = held_keys['w'] * dt * self._linear_velocity
 
+        # Tilt drone when going forward
+        self._parent_entity.rotation_z = held_keys['w'] * -15
+
         # check bounds
         nx = self._parent_entity.x - dist * math.cos(self._parent_entity.rotation_y * math.pi / 180)
         nz = self._parent_entity.z + dist * math.sin(self._parent_entity.rotation_y * math.pi / 180)

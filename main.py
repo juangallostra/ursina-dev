@@ -1,6 +1,7 @@
 from ursina import *
 from ursina.shaders import *
 from controllers import ShipController, DroneController
+from logger import Logger
 
 from player import ShipPlayer, DronePlayer
 from projectile import Projectile
@@ -73,12 +74,17 @@ player = ShipPlayer(
 
 # camera.position = (15, 100, 15)
 # camera.rotation = (90, 0, 0)
-test = Text(text='AAAAAAAA', x=-.85, y=.45)
+
+# test = Text(text='AAAAAAAA', x=-.85, y=.45)
+logger = Logger(
+    messages_to_display=20, 
+    x_0=-.85,
+    y_0=.45,
+    dy=-.05
+)
 
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)
-
-# Text Test
 
 def input(key):
     if key == 'space':
@@ -92,14 +98,15 @@ def input(key):
                 scale_y=0.5,
                 scale_z=0.5,
                 position=(player.x, 0.5, player.z),
-                # collider='mesh'
                 collider='sphere',
                 shader=lit_with_shadows_shader                
             )
         )
+        logger.log("Fire!")
     elif key == 'r':
         for p in projectiles:
             destroy(p)
+        logger.log("Reset all projectiles")
 
 # def update():
 #     for projectile in projectiles:

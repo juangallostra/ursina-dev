@@ -1,6 +1,5 @@
 from ursina import *
 from ursina.shaders import *
-import math
 from controllers import ShipController, DroneController
 
 from player import ShipPlayer, DronePlayer
@@ -40,7 +39,6 @@ for z in range(40):
         )
 
 # Ship
-
 player = ShipPlayer(
     # linear_velocity=6,
     # angular_velocity=120,
@@ -75,9 +73,12 @@ player = ShipPlayer(
 
 # camera.position = (15, 100, 15)
 # camera.rotation = (90, 0, 0)
+test = Text(text='AAAAAAAA', x=-.85, y=.45)
 
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)
+
+# Text Test
 
 def input(key):
     if key == 'space':

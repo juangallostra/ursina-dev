@@ -14,9 +14,6 @@ app = Ursina()
 # ursina includes some basic models like 'cube', 'sphere' and 'quad'.
 
 
-# Sky()
-# ground = Entity(model='plane', collider='box', scale=128, texture='grass', texture_scale=(4,4), name="ground")
-
 EditorCamera()
 
 # in ursina, positive x is right, positive y is up, and positive z is forward.
@@ -41,9 +38,9 @@ for z in range(40):
 
 # Ship
 player = ShipPlayer(
-    # linear_velocity=6,
-    # angular_velocity=120,
-    # controller=ShipController,
+    linear_velocity=6,
+    angular_velocity=120,
+    controller=ShipController,
     model='models/pirate-ship-fat.obj', 
     texture='models/pirate-ship-fat.mtl',
     position=(0,-0.1,0),

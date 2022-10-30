@@ -2,8 +2,8 @@ from ursina import *
 from controllers import DroneController, ShipController
 import math
 
-DEFAULT_LINEAR_VELOCITY = 4
-DEFAULT_ANGULAR_VELOCITY = 80
+DEFAULT_LINEAR_VELOCITY = 6
+DEFAULT_ANGULAR_VELOCITY = 120
 
 
 class ShipPlayer(Entity):

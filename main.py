@@ -161,6 +161,8 @@ rail =  Entity(
         shader=basic_lighting_shader
     )
 
+player.add_collider_check_entity(rail)
+
 def update():
     if rail.intersects(player).hit:
         rail.color = color.lime

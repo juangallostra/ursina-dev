@@ -10,14 +10,14 @@ class BaseController(ABC):
         self._logger = logger
 
     @abstractmethod
-    def move(self, dt, held_keys):
+    def move(self, dt, held_keys, **kwargs):
         pass
 
 class DroneController(BaseController):
     def __init__(self, parent_entity, linear_velocity, angular_velocity, logger, **kwargs):
         super().__init__(parent_entity, linear_velocity, angular_velocity, logger)
 
-    def move(self, dt, held_keys):
+    def move(self, dt, held_keys, **kwargs):
         dist = held_keys['w'] * dt * self._linear_velocity
 
         # Tilt drone when going forward
@@ -43,7 +43,7 @@ class RotationController(BaseController):
     def __init__(self, parent_entity, linear_velocity, angular_velocity, logger, **kwargs):
         super().__init__(parent_entity, linear_velocity, angular_velocity, logger)
     
-    def move(self, dt, held_keys):
+    def move(self, dt, held_keys, **kwargs):
         dist = held_keys['w'] * dt * self._linear_velocity
 
         # check bounds
@@ -112,10 +112,18 @@ class JumpController(BaseController):
             if 0 <= nz and nz <= 40:
                 self._parent_entity.z = nz
 
-    def move(self, dt, held_keys):
+    def move(self, dt, held_keys, **kwargs):
+
+        colls =  kwargs.get('collisions', dict())
+        # for c in colls.items():
+        #     self._logger.log(f'{c}')
+
         dist = held_keys['w'] * dt * self._linear_velocity
 
-        is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
+        if bool(colls):
+            is_on_air = False
+        else:
+            is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         
         if is_on_air:
             self._update_x_z(self._jump_vel, self._jump_orientation)

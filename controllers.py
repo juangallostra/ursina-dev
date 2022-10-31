@@ -122,6 +122,7 @@ class JumpController(BaseController):
 
         if bool(colls):
             is_on_air = False
+            self._jumping = False
         else:
             is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         

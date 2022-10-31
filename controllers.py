@@ -87,11 +87,15 @@ class JumpController(BaseController):
 
     def _update_y(self, dt, vel):
         # vertical velocity?
-        if self._vertical_velocity != 0:
+        if self._vertical_velocity != 0 or self._jumping:
             if not self._jumping:
                 self._jump_orientation = self._parent_entity.rotation_y 
                 self._jump_vel = vel
-                self._jumping = True 
+                self._jumping = True
+            elif self._jumping and self._vertical_velocity == 0:
+                self._jump_orientation = self._parent_entity.rotation_y 
+                self._jump_vel = vel
+
             # update positions and velocities
             # dy = v0*dt + 1/2*a*(dt^2)
             # dv = a*dt
@@ -120,15 +124,15 @@ class JumpController(BaseController):
 
         dist = held_keys['w'] * dt * self._linear_velocity
 
-        if bool(colls):
-            is_on_air = False
-            self._jumping = False
+        if bool(colls): # if there are collisions
+            is_on_air = False # No longer on air
+            # self._jumping = False
+            self._vertical_velocity = 0
         else:
             is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         
         if is_on_air:
             self._update_x_z(self._jump_vel, self._jump_orientation)
-
         # check bounds
         if not is_on_air:
             self._update_x_z(dist, self._parent_entity.rotation_y)

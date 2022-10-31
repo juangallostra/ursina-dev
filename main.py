@@ -6,6 +6,8 @@ from logger import Logger
 from player import GenericPlayer, DronePlayer
 from projectile import Projectile
 
+import panda3d
+
 # create a window
 app = Ursina()
 # most things in ursina are Entities. An Entity is a thing you place in the world.
@@ -160,6 +162,10 @@ rail =  Entity(
         origin_y=0.5,
         shader=basic_lighting_shader
     )
+
+# import pdb; pdb.set_trace() 
+resized_box = panda3d.core.CollisionBox((-20.3241, -1.0, -1.00423), (20.3241, 0.3, 1.00423))
+rail.collider.shape = resized_box
 
 player.add_collider_check_entity(rail)
 

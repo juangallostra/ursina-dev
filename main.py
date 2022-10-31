@@ -1,9 +1,9 @@
 from ursina import *
 from ursina.shaders import *
-from controllers import ShipController, DroneController
+from controllers import RotationController, DroneController
 from logger import Logger
 
-from player import ShipPlayer, DronePlayer
+from player import GenericPlayer, DronePlayer
 from projectile import Projectile
 
 # create a window
@@ -19,11 +19,41 @@ EditorCamera()
 # in ursina, positive x is right, positive y is up, and positive z is forward.
 
 projectiles = []
-sea = []
 
+# sea = []
+# for z in range(40):
+#     for x in range(40):
+#         sea.append(
+#             Entity(
+#                 model='cube',
+#                 # color=color.blue,
+#                 collider='box',
+#                 position=(x, 0, z),
+#                 parent=scene,
+#                 origin_y=0.5,
+#                 texture='models/water_2',
+#                 shader=basic_lighting_shader
+#             )
+#         )
+
+# # Ship
+# player = GenericPlayer(
+#     linear_velocity=6,
+#     angular_velocity=120,
+#     controller=RotationController,
+#     model='models/pirate-ship-fat.obj', 
+#     texture='models/pirate-ship-fat.mtl',
+#     position=(0,-0.1,0),
+#     # collider='mesh'
+#     collider='box',
+#     shader=lit_with_shadows_shader
+# )
+
+
+snow = []
 for z in range(40):
     for x in range(40):
-        sea.append(
+        snow.append(
             Entity(
                 model='cube',
                 # color=color.blue,
@@ -31,23 +61,27 @@ for z in range(40):
                 position=(x, 0, z),
                 parent=scene,
                 origin_y=0.5,
-                texture='models/water_2',
+                texture='models/snow',
                 shader=basic_lighting_shader
             )
         )
 
-# Ship
-player = ShipPlayer(
+# Skier
+player = GenericPlayer(
     linear_velocity=6,
     angular_velocity=120,
-    controller=ShipController,
-    model='models/pirate-ship-fat.obj', 
-    texture='models/pirate-ship-fat.mtl',
-    position=(0,-0.1,0),
+    controller=RotationController,
+    scale_x=0.4,
+    scale_y=0.4,
+    scale_z=0.4,
+    model='models/skier_1.obj', 
+    texture='models/skier_1.mtl',
+    position=(0,0.5,0),
     # collider='mesh'
     collider='box',
     shader=lit_with_shadows_shader
 )
+
 
 # Drone
 # player = DronePlayer(
@@ -83,27 +117,27 @@ logger = Logger(
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)
 
-def input(key):
-    if key == 'space':
-        projectiles.append(
-            Projectile(
-                speed=8,
-                rotation=(player.rotation_y + 90),
-                model='sphere',
-                color=color.black,
-                scale_x=0.5,
-                scale_y=0.5,
-                scale_z=0.5,
-                position=(player.x, 0.5, player.z),
-                collider='sphere',
-                shader=lit_with_shadows_shader                
-            )
-        )
-        logger.log("Fire!")
-    elif key == 'r':
-        for p in projectiles:
-            destroy(p)
-        logger.log("Reset all projectiles")
+# def input(key):
+#     if key == 'space':
+        # projectiles.append(
+        #     Projectile(
+        #         speed=8,
+        #         rotation=(player.rotation_y + 90),
+        #         model='sphere',
+        #         color=color.black,
+        #         scale_x=0.5,
+        #         scale_y=0.5,
+        #         scale_z=0.5,
+        #         position=(player.x, 0.5, player.z),
+        #         collider='sphere',
+        #         shader=lit_with_shadows_shader                
+        #     )
+        # )
+        # logger.log("Fire!")
+    # elif key == 'r':
+    #     for p in projectiles:
+    #         destroy(p)
+    #     logger.log("Reset all projectiles")
 
 # def update():
 #     for projectile in projectiles:
@@ -120,10 +154,10 @@ def input(key):
 # player will move at the same speed regardless of how fast the game runs.
 
 
-# def input(key):
-#     if key == 'space':
-#         player.y += 1
-#         invoke(setattr, player, 'y', player.y-1, delay=.25)
+def input(key):
+    if key == 'space':
+        player.y += 1
+        invoke(setattr, player, 'y', player.y-1, delay=.25)
 
 # Shaders
 pivot = Entity()

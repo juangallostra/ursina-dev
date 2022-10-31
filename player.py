@@ -1,18 +1,17 @@
 from ursina import *
-from controllers import DroneController, ShipController
-import math
+from controllers import DroneController, RotationController
 
 DEFAULT_LINEAR_VELOCITY = 6
 DEFAULT_ANGULAR_VELOCITY = 120
 
 
-class ShipPlayer(Entity):
+class GenericPlayer(Entity):
     def __init__(
         self, 
         add_to_scene_entities=True, 
         linear_velocity=DEFAULT_LINEAR_VELOCITY, 
         angular_velocity=DEFAULT_ANGULAR_VELOCITY, 
-        controller=ShipController, 
+        controller=RotationController, 
         **kwargs
     ):
         super().__init__(add_to_scene_entities, **kwargs)

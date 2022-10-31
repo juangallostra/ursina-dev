@@ -38,7 +38,7 @@ class DroneController(BaseController):
         self._parent_entity.rotation_y -= held_keys['d'] * dt * self._angular_velocity
 
 
-class ShipController(BaseController):
+class RotationController(BaseController):
     def __init__(self, parent_entity, linear_velocity, angular_velocity):
         super().__init__(parent_entity, linear_velocity, angular_velocity)
 

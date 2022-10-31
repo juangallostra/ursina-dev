@@ -111,6 +111,7 @@ class JumpController(BaseController):
     def _update_x_z(self, d, rot ):
             nx = self._parent_entity.x - d * math.cos(rot * math.pi / 180)
             nz = self._parent_entity.z + d * math.sin(rot * math.pi / 180)
+            # check bounds
             if 0 <= nx and nx <= 40:
                 self._parent_entity.x = nx
             if 0 <= nz and nz <= 40:
@@ -126,14 +127,12 @@ class JumpController(BaseController):
 
         if bool(colls): # if there are collisions
             is_on_air = False # No longer on air
-            # self._jumping = False
             self._vertical_velocity = 0
         else:
             is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         
         if is_on_air:
             self._update_x_z(self._jump_vel, self._jump_orientation)
-        # check bounds
         if not is_on_air:
             self._update_x_z(dist, self._parent_entity.rotation_y)
 

@@ -13,7 +13,6 @@ app = Ursina()
 # the first paramenter tells us the Entity's model will be a 3d-model called 'cube'.
 # ursina includes some basic models like 'cube', 'sphere' and 'quad'.
 
-# test = Text(text='AAAAAAAA', x=-.85, y=.45)
 logger = Logger(
     messages_to_display=20, 
     x_0=-.85,
@@ -26,7 +25,7 @@ EditorCamera()
 
 # in ursina, positive x is right, positive y is up, and positive z is forward.
 
-projectiles = []
+# projectiles = []
 
 # sea = []
 # for z in range(40):

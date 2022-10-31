@@ -116,7 +116,7 @@ class JumpController(BaseController):
 
         colls =  kwargs.get('collisions', dict())
         # for c in colls.items():
-        #     self._logger.log(f'{c}')
+        #     self._logger.log(f'{c[1][1].point}')
 
         dist = held_keys['w'] * dt * self._linear_velocity
 

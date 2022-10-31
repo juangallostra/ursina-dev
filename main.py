@@ -147,14 +147,6 @@ camera.rotation = (45, 0, 0)
 # time.dt is simply the time since the last frame. by multiplying with this, the
 # player will move at the same speed regardless of how fast the game runs.
 
-
-def input(key):
-    if key == 'space':
-        logger.log("Jump!")
-        player.get_controller().set_vertical_vel(5)
-        # player.y += 1
-        # invoke(setattr, player, 'y', player.y-1, delay=.25)
-
 # Extra entities
 rail =  Entity(
         model='models/rail_1.obj',
@@ -172,9 +164,17 @@ rail =  Entity(
 
 def update():
     if rail.intersects(player).hit:
+        logger.log(f'{rail.intersects(player).normal}')
         rail.color = color.lime
     else:
         rail.color = color.white
+
+def input(key):
+    if key == 'space':
+        logger.log("Jump!")
+        player.get_controller().set_vertical_vel(5)
+        # player.y += 1
+        # invoke(setattr, player, 'y', player.y-1, delay=.25)
 
 # Shaders
 pivot = Entity()

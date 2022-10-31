@@ -24,12 +24,16 @@ class GenericPlayer(Entity):
             angular_velocity=angular_velocity,
             ground_height=self.y)
         self._logger = logger
+        self._collisions_againts = []
 
     def update(self):
         self._controller.move(time.dt, held_keys)
 
     def get_controller(self):
         return self._controller
+
+    def add_collider_check_entity(self, entity):
+        self._collisions_againts.append(entity)
 
 class DronePlayer(Entity):
     def __init__(        

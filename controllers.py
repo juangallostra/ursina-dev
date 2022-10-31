@@ -75,6 +75,7 @@ class JumpController(BaseController):
         self._g = -9.81
         self._ground_height = ground_height # Shouldn't be hardcoded, can be received on init
         self._multiple_jump = False
+        self._jumping = False
     
     def set_vertical_vel(self, vertical_velocity):
         if not self._multiple_jump and self._vertical_velocity != 0:
@@ -85,9 +86,13 @@ class JumpController(BaseController):
     def get_vertical_vel(self):
         return self._vertical_velocity
 
-    def _update_y(self, dt):
+    def _update_y(self, dt, vel):
         # vertical velocity?
         if self._vertical_velocity != 0:
+            if not self._jumping:
+                self._jump_orientation = self._parent_entity.rotation_y 
+                self._jump_vel = vel
+                self._jumping = True 
             # update positions and velocities
             # dy = v0*dt + 1/2*a*(dt^2)
             # dv = a*dt
@@ -96,21 +101,43 @@ class JumpController(BaseController):
             if self._parent_entity.y <= self._ground_height:
                 self._parent_entity.y = self._ground_height
                 self._vertical_velocity = 0
+                self._jumping = False
+        
+        return True if self._parent_entity.y > self._ground_height else False
+
+    def _update_x_z(self, d, rot ):
+            nx = self._parent_entity.x - d * math.cos(rot * math.pi / 180)
+            nz = self._parent_entity.z + d * math.sin(rot * math.pi / 180)
+            if 0 <= nx and nx <= 40:
+                self._parent_entity.x = nx
+            if 0 <= nz and nz <= 40:
+                self._parent_entity.z = nz
+
 
     def move(self, dt, held_keys):
         # TODO: While on air, this values should not be able to change
         dist = held_keys['w'] * dt * self._linear_velocity
 
-        self._update_y(dt)
+        is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         
-        # check bounds
-        nx = self._parent_entity.x - dist * math.cos(self._parent_entity.rotation_y * math.pi / 180)
-        nz = self._parent_entity.z + dist * math.sin(self._parent_entity.rotation_y * math.pi / 180)
-        if 0 <= nx and nx <= 40:
-            self._parent_entity.x = nx
-        if 0 <= nz and nz <= 40:
-            self._parent_entity.z = nz
+        if is_on_air:
+            self._update_x_z(self._jump_vel, self._jump_orientation)
+            # nx = self._parent_entity.x - self._jump_vel * math.cos(self._jump_orientation * math.pi / 180)
+            # nz = self._parent_entity.z + self._jump_vel * math.sin(self._jump_orientation * math.pi / 180)
+            # if 0 <= nx and nx <= 40:
+            #     self._parent_entity.x = nx
+            # if 0 <= nz and nz <= 40:
+            #     self._parent_entity.z = nz
 
+        # check bounds
+        if not is_on_air:
+            self._update_x_z(dist, self._parent_entity.rotation_y)
+            # nx = self._parent_entity.x - dist * math.cos(self._parent_entity.rotation_y * math.pi / 180)
+            # nz = self._parent_entity.z + dist * math.sin(self._parent_entity.rotation_y * math.pi / 180)
+            # if 0 <= nx and nx <= 40:
+            #     self._parent_entity.x = nx
+            # if 0 <= nz and nz <= 40:
+            #     self._parent_entity.z = nz
 
         # player.x += held_keys['d'] * time.dt * 4
         # player.x -= held_keys['a'] * time.dt * 4

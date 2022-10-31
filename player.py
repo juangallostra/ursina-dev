@@ -10,27 +10,43 @@ class GenericPlayer(Entity):
         self, 
         add_to_scene_entities=True, 
         linear_velocity=DEFAULT_LINEAR_VELOCITY, 
-        angular_velocity=DEFAULT_ANGULAR_VELOCITY, 
-        controller=RotationController, 
+        angular_velocity=DEFAULT_ANGULAR_VELOCITY,
+        ground_height=0,
+        controller=RotationController,
+        logger=None,
         **kwargs
     ):
         super().__init__(add_to_scene_entities, **kwargs)
-        self._controller = controller(parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
+        self._controller = controller(
+            logger=logger,
+            parent_entity=self,
+            linear_velocity=linear_velocity,
+            angular_velocity=angular_velocity,
+            ground_height=self.y)
+        self._logger = logger
+        self._collisions_againts = []
 
     def update(self):
         self._controller.move(time.dt, held_keys)
 
+    def get_controller(self):
+        return self._controller
+
+    def add_collider_check_entity(self, entity):
+        self._collisions_againts.append(entity)
+
 class DronePlayer(Entity):
     def __init__(        
         self, 
+        logger,
         add_to_scene_entities=True, 
         linear_velocity=DEFAULT_LINEAR_VELOCITY, 
         angular_velocity=DEFAULT_ANGULAR_VELOCITY, 
-        controller=DroneController, 
+        controller=DroneController,
         **kwargs
     ):
         super().__init__(add_to_scene_entities, **kwargs)
-        self._controller = controller(parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
+        self._controller = controller(logger=logger, parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
 
 
     def update(self):

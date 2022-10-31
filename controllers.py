@@ -113,40 +113,17 @@ class JumpController(BaseController):
             if 0 <= nz and nz <= 40:
                 self._parent_entity.z = nz
 
-
     def move(self, dt, held_keys):
-        # TODO: While on air, this values should not be able to change
         dist = held_keys['w'] * dt * self._linear_velocity
 
         is_on_air = self._update_y(dt, held_keys['w'] * dt * self._linear_velocity)
         
         if is_on_air:
             self._update_x_z(self._jump_vel, self._jump_orientation)
-            # nx = self._parent_entity.x - self._jump_vel * math.cos(self._jump_orientation * math.pi / 180)
-            # nz = self._parent_entity.z + self._jump_vel * math.sin(self._jump_orientation * math.pi / 180)
-            # if 0 <= nx and nx <= 40:
-            #     self._parent_entity.x = nx
-            # if 0 <= nz and nz <= 40:
-            #     self._parent_entity.z = nz
 
         # check bounds
         if not is_on_air:
             self._update_x_z(dist, self._parent_entity.rotation_y)
-            # nx = self._parent_entity.x - dist * math.cos(self._parent_entity.rotation_y * math.pi / 180)
-            # nz = self._parent_entity.z + dist * math.sin(self._parent_entity.rotation_y * math.pi / 180)
-            # if 0 <= nx and nx <= 40:
-            #     self._parent_entity.x = nx
-            # if 0 <= nz and nz <= 40:
-            #     self._parent_entity.z = nz
-
-        # player.x += held_keys['d'] * time.dt * 4
-        # player.x -= held_keys['a'] * time.dt * 4
-
-        # player.z += held_keys['w'] * time.dt * 4
-        # player.z -= held_keys['s'] * time.dt * 4
-
-        # player.y += held_keys['z'] * time.dt * 4
-        # player.y -= held_keys['x'] * time.dt * 4
 
         self._parent_entity.rotation_y += held_keys['a'] * dt * self._angular_velocity
         self._parent_entity.rotation_y -= held_keys['d'] * dt * self._angular_velocity

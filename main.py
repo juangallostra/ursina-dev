@@ -140,13 +140,6 @@ camera.rotation = (45, 0, 0)
     #         destroy(p)
     #     logger.log("Reset all projectiles")
 
-# def update():
-#     for projectile in projectiles:
-#         if projectile.intersects(player).hit:
-#             projectile.color = color.lime
-#             destroy(projectile)
-#         else:
-#             projectile.color = color.black
 
 # this part will make the player move left or right based on our input.
 # to check which keys are held down, we can check the held_keys dictionary.
@@ -161,6 +154,27 @@ def input(key):
         player.get_controller().set_vertical_vel(5)
         # player.y += 1
         # invoke(setattr, player, 'y', player.y-1, delay=.25)
+
+# Extra entities
+rail =  Entity(
+        model='models/rail_1.obj',
+        texture='models/rail_1',
+        scale_x = 0.3,
+        scale_y = 0.3,
+        scale_z = 0.3,
+        # color=color.blue,
+        collider='box',
+        position=(20, 0, 20),
+        parent=scene,
+        origin_y=0.5,
+        shader=basic_lighting_shader
+    )
+
+def update():
+    if rail.intersects(player).hit:
+        rail.color = color.lime
+    else:
+        rail.color = color.white
 
 # Shaders
 pivot = Entity()

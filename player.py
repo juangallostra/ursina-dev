@@ -27,7 +27,12 @@ class GenericPlayer(Entity):
         self._collisions_againts = []
 
     def update(self):
-        self._controller.move(time.dt, held_keys)
+        # TODO: improve collision handling
+        collisions = dict()
+        for entity in self._collisions_againts:
+            if entity.intersects(self).hit:
+                collisions[entity.name] = (entity, entity.intersects(self))
+        self._controller.move(time.dt, held_keys, collisions=collisions)
 
     def get_controller(self):
         return self._controller

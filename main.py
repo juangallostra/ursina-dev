@@ -13,7 +13,6 @@ app = Ursina()
 # the first paramenter tells us the Entity's model will be a 3d-model called 'cube'.
 # ursina includes some basic models like 'cube', 'sphere' and 'quad'.
 
-# test = Text(text='AAAAAAAA', x=-.85, y=.45)
 logger = Logger(
     messages_to_display=20, 
     x_0=-.85,
@@ -26,7 +25,7 @@ EditorCamera()
 
 # in ursina, positive x is right, positive y is up, and positive z is forward.
 
-projectiles = []
+# projectiles = []
 
 # sea = []
 # for z in range(40):
@@ -162,16 +161,16 @@ rail =  Entity(
         shader=basic_lighting_shader
     )
 
+player.add_collider_check_entity(rail)
+
 def update():
     if rail.intersects(player).hit:
-        logger.log(f'{rail.intersects(player).normal}')
         rail.color = color.lime
     else:
         rail.color = color.white
 
 def input(key):
     if key == 'space':
-        logger.log("Jump!")
         player.get_controller().set_vertical_vel(5)
         # player.y += 1
         # invoke(setattr, player, 'y', player.y-1, delay=.25)

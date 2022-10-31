@@ -164,14 +164,12 @@ rail =  Entity(
 
 def update():
     if rail.intersects(player).hit:
-        logger.log(f'{rail.intersects(player).normal}')
         rail.color = color.lime
     else:
         rail.color = color.white
 
 def input(key):
     if key == 'space':
-        logger.log("Jump!")
         player.get_controller().set_vertical_vel(5)
         # player.y += 1
         # invoke(setattr, player, 'y', player.y-1, delay=.25)

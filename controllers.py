@@ -81,7 +81,6 @@ class JumpController(BaseController):
         if not self._multiple_jump and self._vertical_velocity != 0:
             return # do not allow double, triple or even more jumps
         self._vertical_velocity = vertical_velocity
-        self._logger.log(f"Set vertical vel to: {self._vertical_velocity}")
 
     def get_vertical_vel(self):
         return self._vertical_velocity

@@ -1,6 +1,6 @@
 from ursina import *
 from ursina.shaders import *
-from controllers import RotationController, DroneController
+from controllers import RotationController, DroneController, JumpController
 from logger import Logger
 
 from player import GenericPlayer, DronePlayer
@@ -76,10 +76,10 @@ for z in range(40):
 
 # Skier
 player = GenericPlayer(
-    logger,
     linear_velocity=6,
     angular_velocity=120,
-    controller=RotationController,
+    controller=JumpController,
+    logger=logger,
     scale_x=0.4,
     scale_y=0.4,
     scale_z=0.4,

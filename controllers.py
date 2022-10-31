@@ -14,7 +14,7 @@ class BaseController(ABC):
         pass
 
 class DroneController(BaseController):
-    def __init__(self, parent_entity, linear_velocity, angular_velocity, logger):
+    def __init__(self, parent_entity, linear_velocity, angular_velocity, logger, **kwargs):
         super().__init__(parent_entity, linear_velocity, angular_velocity, logger)
 
     def move(self, dt, held_keys):
@@ -40,15 +40,9 @@ class DroneController(BaseController):
 
 
 class RotationController(BaseController):
-    def __init__(self, parent_entity, linear_velocity, angular_velocity, logger):
+    def __init__(self, parent_entity, linear_velocity, angular_velocity, logger, **kwargs):
         super().__init__(parent_entity, linear_velocity, angular_velocity, logger)
-
-        self._vertical_vel = 0
     
-    def set_vertical_vel(self, vv):
-        self._vertical_vel = vv
-        self._logger.log(f"Set VV to: {self._vertical_vel}")
-
     def move(self, dt, held_keys):
         dist = held_keys['w'] * dt * self._linear_velocity
 
@@ -60,19 +54,63 @@ class RotationController(BaseController):
         if 0 <= nz and nz <= 40:
             self._parent_entity.z = nz
 
-        # vertical acceleration?
-        if self._vertical_vel != 0:
+        # player.x += held_keys['d'] * time.dt * 4
+        # player.x -= held_keys['a'] * time.dt * 4
+
+        # player.z += held_keys['w'] * time.dt * 4
+        # player.z -= held_keys['s'] * time.dt * 4
+
+        # player.y += held_keys['z'] * time.dt * 4
+        # player.y -= held_keys['x'] * time.dt * 4
+
+        self._parent_entity.rotation_y += held_keys['a'] * dt * self._angular_velocity
+        self._parent_entity.rotation_y -= held_keys['d'] * dt * self._angular_velocity
+        
+
+class JumpController(BaseController):
+    def __init__(self, parent_entity, linear_velocity, angular_velocity, logger, ground_height, **kwargs):
+        super().__init__(parent_entity, linear_velocity, angular_velocity, logger)
+
+        self._vertical_velocity = 0
+        self._g = -9.81
+        self._ground_height = ground_height # Shouldn't be hardcoded, can be received on init
+        self._multiple_jump = False
+    
+    def set_vertical_vel(self, vertical_velocity):
+        if not self._multiple_jump and self._vertical_velocity != 0:
+            return # do not allow double, triple or even more jumps
+        self._vertical_velocity = vertical_velocity
+        self._logger.log(f"Set vertical vel to: {self._vertical_velocity}")
+
+    def get_vertical_vel(self):
+        return self._vertical_velocity
+
+    def _update_y(self, dt):
+        # vertical velocity?
+        if self._vertical_velocity != 0:
+            # update positions and velocities
             # dy = v0*dt + 1/2*a*(dt^2)
             # dv = a*dt
-            dy = self._vertical_vel * dt + (1/2) * (-9.81) * dt*dt
-            dv = -9.81 * dt
-            self._logger.log(f"Jumping: dy - {dy}, dv - {dv}")
-            # update positions and velocities
-            self._parent_entity.y += dy
-            self._vertical_vel += dv
-            if self._parent_entity.y <= 0.5:
-                self._parent_entity.y = 0.5
-                self._vertical_vel = 0
+            self._parent_entity.y += self._vertical_velocity * dt + (1/2) * (self._g) * dt*dt
+            self._vertical_velocity += self._g * dt
+            if self._parent_entity.y <= self._ground_height:
+                self._parent_entity.y = self._ground_height
+                self._vertical_velocity = 0
+
+    def move(self, dt, held_keys):
+        # TODO: While on air, this values should not be able to change
+        dist = held_keys['w'] * dt * self._linear_velocity
+
+        self._update_y(dt)
+        
+        # check bounds
+        nx = self._parent_entity.x - dist * math.cos(self._parent_entity.rotation_y * math.pi / 180)
+        nz = self._parent_entity.z + dist * math.sin(self._parent_entity.rotation_y * math.pi / 180)
+        if 0 <= nx and nx <= 40:
+            self._parent_entity.x = nx
+        if 0 <= nz and nz <= 40:
+            self._parent_entity.z = nz
+
 
         # player.x += held_keys['d'] * time.dt * 4
         # player.x -= held_keys['a'] * time.dt * 4

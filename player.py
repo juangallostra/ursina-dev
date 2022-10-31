@@ -8,29 +8,34 @@ DEFAULT_ANGULAR_VELOCITY = 120
 class GenericPlayer(Entity):
     def __init__(
         self, 
+        logger,
         add_to_scene_entities=True, 
         linear_velocity=DEFAULT_LINEAR_VELOCITY, 
         angular_velocity=DEFAULT_ANGULAR_VELOCITY, 
-        controller=RotationController, 
+        controller=RotationController,
         **kwargs
     ):
         super().__init__(add_to_scene_entities, **kwargs)
-        self._controller = controller(parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
-
+        self._controller = controller(logger=logger, parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
+        self._logger = logger
     def update(self):
         self._controller.move(time.dt, held_keys)
+
+    def get_controller(self):
+        return self._controller
 
 class DronePlayer(Entity):
     def __init__(        
         self, 
+        logger,
         add_to_scene_entities=True, 
         linear_velocity=DEFAULT_LINEAR_VELOCITY, 
         angular_velocity=DEFAULT_ANGULAR_VELOCITY, 
-        controller=DroneController, 
+        controller=DroneController,
         **kwargs
     ):
         super().__init__(add_to_scene_entities, **kwargs)
-        self._controller = controller(parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
+        self._controller = controller(logger=logger, parent_entity=self, linear_velocity=linear_velocity, angular_velocity=angular_velocity)
 
 
     def update(self):

@@ -13,6 +13,14 @@ app = Ursina()
 # the first paramenter tells us the Entity's model will be a 3d-model called 'cube'.
 # ursina includes some basic models like 'cube', 'sphere' and 'quad'.
 
+# test = Text(text='AAAAAAAA', x=-.85, y=.45)
+logger = Logger(
+    messages_to_display=20, 
+    x_0=-.85,
+    y_0=.45,
+    dy=-.05
+)
+
 
 EditorCamera()
 
@@ -68,6 +76,7 @@ for z in range(40):
 
 # Skier
 player = GenericPlayer(
+    logger,
     linear_velocity=6,
     angular_velocity=120,
     controller=RotationController,
@@ -105,14 +114,6 @@ player = GenericPlayer(
 
 # camera.position = (15, 100, 15)
 # camera.rotation = (90, 0, 0)
-
-# test = Text(text='AAAAAAAA', x=-.85, y=.45)
-logger = Logger(
-    messages_to_display=20, 
-    x_0=-.85,
-    y_0=.45,
-    dy=-.05
-)
 
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)
@@ -156,8 +157,10 @@ camera.rotation = (45, 0, 0)
 
 def input(key):
     if key == 'space':
-        player.y += 1
-        invoke(setattr, player, 'y', player.y-1, delay=.25)
+        logger.log("Jump!")
+        player.get_controller().set_vertical_vel(5)
+        # player.y += 1
+        # invoke(setattr, player, 'y', player.y-1, delay=.25)
 
 # Shaders
 pivot = Entity()

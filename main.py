@@ -58,7 +58,6 @@ EditorCamera()
 #     shader=lit_with_shadows_shader
 # )
 
-
 snow = []
 for z in range(40):
     for x in range(40):
@@ -112,10 +111,6 @@ player = GenericPlayer(
 #     shader=lit_with_shadows_shader
 # )
 
-
-# camera.position = (15, 100, 15)
-# camera.rotation = (90, 0, 0)
-
 camera.position = (20, 70, -55)
 camera.rotation = (45, 0, 0)
 
@@ -163,10 +158,10 @@ rail =  Entity(
         shader=basic_lighting_shader
     )
 
-# import pdb; pdb.set_trace() 
-resized_box = panda3d.core.CollisionBox((-20.3241, -1.0, -1.00423), (20.3241, 0.3, 1.00423))
-rail.collider.shape = resized_box
+# Manually adjusted values
+rail.collider.shape = panda3d.core.CollisionBox((-20.3241, -1.0, -1.00423), (20.3241, 0.3, 1.00423))
 
+# Add rail to list of objects the player has to check collisions against
 player.add_collider_check_entity(rail)
 
 def update():

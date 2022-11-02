@@ -8,6 +8,8 @@ from projectile import Projectile
 
 import panda3d
 
+from skier import Skier
+
 # create a window
 app = Ursina()
 # most things in ursina are Entities. An Entity is a thing you place in the world.
@@ -75,21 +77,28 @@ for z in range(40):
         )
 
 # Skier
-player = GenericPlayer(
+player = Skier(
     linear_velocity=6,
     angular_velocity=120,
     controller=JumpController,
-    logger=logger,
-    scale_x=0.4,
-    scale_y=0.4,
-    scale_z=0.4,
-    model='models/skier_1.obj', 
-    texture='models/skier_1.mtl',
-    position=(0,0.5,0),
-    # collider='mesh'
-    collider='box',
-    shader=lit_with_shadows_shader
+    logger=logger
 )
+
+# player = GenericPlayer(
+#     linear_velocity=6,
+#     angular_velocity=120,
+#     controller=JumpController,
+#     logger=logger,
+#     scale_x=0.4,
+#     scale_y=0.4,
+#     scale_z=0.4,
+#     model='models/skier_1.obj', 
+#     texture='models/skier_1.mtl',
+#     position=(0,0.5,0),
+#     # collider='mesh'
+#     collider='box',
+#     shader=lit_with_shadows_shader
+# )
 
 
 # Drone

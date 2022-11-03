@@ -5,6 +5,12 @@ from ursina.shaders import *
 DEFAULT_LINEAR_VELOCITY = 6
 DEFAULT_ANGULAR_VELOCITY = 120
 
+class CustomCollision:
+    def __init__(self, obj1, obj2, collision) -> None:
+        self.obj1 = obj1
+        self.obj2 = obj2
+        self.collision = collision
+
 class Skier(Entity):
     """
     Player entity. This is the Entity that the user controls and
@@ -46,14 +52,15 @@ class Skier(Entity):
 
     def update(self):
         # TODO: improve collision handling
-        collisions = dict()
+        collisions = []
         for entity in self._collisions_againts:
             if entity.intersects(self).hit:
-                collisions[entity.name] = (entity, entity.intersects(self))
+                collisions.append(CustomCollision(self, entity, entity.intersects(self)))
+
         self._controller.move(time.dt, held_keys, collisions=collisions)
 
-    def set_vertical_velocity(self):
-        self._controller.set_vertical_velocity(5)
+    def set_vertical_velocity(self, vertical_velocity):
+        self._controller.set_vertical_velocity(vertical_velocity)
 
     def get_controller(self):
         return self._controller

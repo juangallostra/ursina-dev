@@ -83,11 +83,11 @@ rail.collider.shape = panda3d.core.CollisionBox((-20.3241, -1.0, -1.00423), (20.
 # Add rail to list of objects the player has to check collisions against
 player.add_collider_check_entity(rail)
 
-def update():
-    if rail.intersects(player).hit:
-        rail.color = color.lime
-    else:
-        rail.color = color.white
+# def update():
+#     if rail.intersects(player).hit:
+#         rail.color = color.lime
+#     else:
+#         rail.color = color.white
 
 def input(key):
     if key == 'space':

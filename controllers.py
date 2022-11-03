@@ -119,13 +119,13 @@ class JumpController(BaseController):
 
     def move(self, dt, held_keys, **kwargs):
         # Update x,y,z and update rotation
-        collisions =  kwargs.get('collisions', dict())
+        collisions =  kwargs.get('collisions', [])
         # for c in colls.items():
         #     self._logger.log(f'{c[1][1].point}')
 
         dist = held_keys['w'] * dt * self._linear_velocity
 
-        if bool(collisions): # if there are collisions
+        if collisions: # if there are collisions
             is_on_air = False # No longer on air
             self._vertical_velocity = 0
         else:

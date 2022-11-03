@@ -77,12 +77,12 @@ class JumpController(BaseController):
         self._multiple_jump = False
         self._jumping = False
     
-    def set_vertical_vel(self, vertical_velocity):
+    def set_vertical_velocity(self, vertical_velocity):
         if not self._multiple_jump and self._vertical_velocity != 0:
             return # do not allow double, triple or even more jumps
         self._vertical_velocity = vertical_velocity
 
-    def get_vertical_vel(self):
+    def get_vertical_velocity(self):
         return self._vertical_velocity
 
     def _update_y(self, dt, vel):
@@ -118,14 +118,14 @@ class JumpController(BaseController):
                 self._parent_entity.z = nz
 
     def move(self, dt, held_keys, **kwargs):
-
-        colls =  kwargs.get('collisions', dict())
+        # Update x,y,z and update rotation
+        collisions =  kwargs.get('collisions', dict())
         # for c in colls.items():
         #     self._logger.log(f'{c[1][1].point}')
 
         dist = held_keys['w'] * dt * self._linear_velocity
 
-        if bool(colls): # if there are collisions
+        if bool(collisions): # if there are collisions
             is_on_air = False # No longer on air
             self._vertical_velocity = 0
         else:

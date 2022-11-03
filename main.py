@@ -91,7 +91,7 @@ def update():
 
 def input(key):
     if key == 'space':
-        player.get_controller().set_vertical_vel(5)
+        player.set_vertical_velocity(5)
 
 
 # Shaders

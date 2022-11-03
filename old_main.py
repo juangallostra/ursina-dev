@@ -181,7 +181,7 @@ def update():
 
 def input(key):
     if key == 'space':
-        player.get_controller().set_vertical_vel(5)
+        player.get_controller().set_vertical_velocity(5)
         # player.y += 1
         # invoke(setattr, player, 'y', player.y-1, delay=.25)
 
